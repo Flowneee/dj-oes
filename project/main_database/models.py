@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-# Create your models here.
-
 
 class Subject(models.Model):
 
@@ -14,11 +12,15 @@ class Subject(models.Model):
         'self',
         verbose_name=_('Надтема'),
         related_name='child_subjects',
+        blank=True,
+        null=True
     )
 
     class Meta:
         verbose_name = _('Тема')
         verbose_name_plural = _('Темы')
+    def __str__(self):
+        return self.text    
 
 
 class Question(models.Model):
@@ -36,6 +38,8 @@ class Question(models.Model):
     class Meta:
         verbose_name = _('Вопрос')
         verbose_name_plural = _('Вопросы')
+    def __str__(self):
+        return self.text         
 
 class Answer(models.Model):
 
@@ -56,3 +60,5 @@ class Answer(models.Model):
     class Meta:
         verbose_name = _('Ответ')
         verbose_name_plural = _('Ответы')
+    def __str__(self):
+        return self.text
