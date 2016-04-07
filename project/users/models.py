@@ -130,4 +130,3 @@ class ProxyGroup(Group):
         proxy = True
         verbose_name = Group._meta.verbose_name
         verbose_name_plural = Group._meta.verbose_name_plural
-

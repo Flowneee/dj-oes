@@ -22,23 +22,7 @@ SECRET_KEY = ps.SECRET_KEY
 DEBUG = True
 ALLOWED_HOSTS = ps.ALLOWED_HOSTS
 ADMINS = ps.ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-ADMINS = (
-    ('4614742798', 'flowneee3@gmail.com'),
-)
-
-ALLOWED_HOSTS = [
-    '192.168.1.33',
-    '93.123.151.15',
-    '127.0.0.1',
-]
+DATABASES = ps.DATABASES
 
 
 # Application definition
@@ -52,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'users',
+    'main_database',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -70,7 +55,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
