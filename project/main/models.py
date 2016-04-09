@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,6 +24,9 @@ class Subject(models.Model):
     def __str__(self):
         return self.text    
 
+    def __str__(self):
+        return self.text
+
 
 class Question(models.Model):
 
@@ -30,7 +35,7 @@ class Question(models.Model):
         blank=False,
     )
     subject = models.ForeignKey(
-        'main_database.Subject',
+        'main.Subject',
         verbose_name=_('Тема'),
         related_name='subject_questions',
     )
@@ -41,6 +46,10 @@ class Question(models.Model):
     def __str__(self):
         return self.text         
 
+    def __str__(self):
+        return self.text
+
+
 class Answer(models.Model):
 
     text = models.TextField(
@@ -48,7 +57,7 @@ class Answer(models.Model):
         blank=False,
     )
     question = models.ForeignKey(
-        'main_database.Question',
+        'main.Question',
         verbose_name=_('Вопрос'),
         related_name='question_answers',
     )
@@ -60,5 +69,6 @@ class Answer(models.Model):
     class Meta:
         verbose_name = _('Ответ')
         verbose_name_plural = _('Ответы')
+
     def __str__(self):
         return self.text
