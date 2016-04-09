@@ -8,6 +8,7 @@ docs/
 *~
 TAGS
 .projectile
+*.el
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% block extrahead_block %}{% endblock %}
+    <title>
+      {% trans 'Система онлайн тестирования' %}{% block title_block %}{% endblock %}
+    </title>
+  </head>
+
+  <body>
+      {% block body_block  %}{% endblock %}
+  </body>
+</html>
