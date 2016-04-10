@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 class Subject(models.Model):
 
     text = models.TextField(
+        max_length=100,
         verbose_name=_('Тема'),
         blank=False,
     )
@@ -21,11 +22,12 @@ class Subject(models.Model):
     class Meta:
         verbose_name = _('Тема')
         verbose_name_plural = _('Темы')
-    def __str__(self):
-        return self.text    
 
     def __str__(self):
         return self.text
+
+    def get_absolute_url(self):
+        return reverse('subject-detail', kwargs={'pk': self.pk})
 
 
 class Question(models.Model):
@@ -43,11 +45,12 @@ class Question(models.Model):
     class Meta:
         verbose_name = _('Вопрос')
         verbose_name_plural = _('Вопросы')
-    def __str__(self):
-        return self.text         
 
     def __str__(self):
         return self.text
+
+    def get_absolute_url(self):
+        return reverse('subject-detail', kwargs={'pk': self.pk})        
 
 
 class Answer(models.Model):
@@ -72,3 +75,6 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text
+
+    def get_absolute_url(self):
+        return reverse('subject-detail', kwargs={'pk': self.pk})        
