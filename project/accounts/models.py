@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -37,7 +39,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, first_name, last_name, account_level='1',
-                    is_active=True, is_staff=False, is_superuser=False,
+                    is_active=False, is_staff=False, is_superuser=False,
                     password=None, **extra_fields):
         return self._create_user(first_name, last_name, account_level,
                                  is_active, is_staff, password, **extra_fields)

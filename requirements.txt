@@ -1,3 +1,11 @@
 Django==1.8.12
 django-bootstrap3
 django-admin-bootstrapped
+django-macros==0.4.0
+
+# Debug requirements #
+six==1.10.0
+sqlparse==0.1.19
+django-debug-toolbar==1.4
+django-extensions==1.6.1
+django-mmc==1.6.1

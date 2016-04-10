@@ -1,7 +1,10 @@
+# coding: utf-8
+
 from django.contrib.auth import forms
 from django.utils.translation import ugettext_lazy as _
 from django.forms.fields import BooleanField
-from users.models import User
+
+from .models import User
 
 
 class UserCreationForm(forms.UserCreationForm):
@@ -11,7 +14,7 @@ class UserCreationForm(forms.UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'patronymic')
+        fields = ('email', 'last_name', 'first_name', 'patronymic')
 
 
 class UserChangeForm(forms.UserChangeForm):

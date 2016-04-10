@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block title %}{% trans 'Регистрация' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-4 col-xs-offset-4">
+    {% if user.is_authenticated %}
+      <a href="{% url 'index' %}">{% trans 'Возврат на главную страницу' %}</a>
+    {% else %}
+      <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="alert alert-warning">
+          <strong>{% trans 'Внимание!' %}</strong> {% trans 'Прежде чем вы сможете начать голосовать, создавать референдумы и проявлять иную активность, администратор должен подтвердить вашу учетную запись (это займет некоторое время).' %}
+        </div>
+        <div class="checkbox">
+          <label class="checkbox"><input type="checkbox" value="" id="i-got-it">{% trans 'Я все понял, зарегистрируйте меня.' %}</label>
+        </div>
+        {% buttons %}
+          <button type="submit" class="btn btn-primary" id="reg" disabled="true">
+            {% trans 'Зарегестрироваться' %}
+          </button>
+        {% endbuttons %}
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'accounts/js/register.js' %}"></script>
+{% endblock %}

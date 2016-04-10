@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Вход' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-2 col-xs-offset-5">
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <button type="submit" class="btn btn-primary btn-block">
+        {% trans 'Вход' %}
+      </button>
+      <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    </form>
+  </div>
+{% endblock %}

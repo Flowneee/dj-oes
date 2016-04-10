@@ -1,10 +1,12 @@
+# coding: utf-8
+
 from django.contrib import admin
 from django.contrib.auth import admin as aauth
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import User, ProxyGroup
-from users.forms import UserChangeForm, UserCreationForm
+from .models import User, ProxyGroup
+from .forms import UserChangeForm, UserCreationForm
 
 # Register your models here.
 
