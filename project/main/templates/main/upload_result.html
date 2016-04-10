@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %} Загрузка файлов {% endblock %}
+
+{% block content %}
+<div class="col-xs-6 col-xs-offset-3">
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <td><strong>Отчет о загрузке</strong></td>
+          </tr>
+        </thead>
+        <tbody>
+          {% if parse_state == 0 %}
+            <tr class="success">
+              <td>{% trans 'Обработка успешно завершена' %}</td>
+            </tr>
+          {% else %}
+            {% for message in errors %}
+              {% if message.lvl == 'Error' %}
+                <tr class="danger">
+                  <td>{{ message.get_str|linebreaks }}</td>
+                </tr>
+              {% else %}
+                <tr class="warning">
+                  <td>{{ message.get_str|linebreaks }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <form method="GET" action="{% url 'upload_csv' %}">
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">
+          {% trans 'Отправить заново' %}
+        </button>
+      {% endbuttons %}
+    </form>
+    <form method="GET" action="{% url 'index' %}">
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">
+          {% trans 'Вернуться на главную' %}
+        </button>
+      {% endbuttons %}
+    </form>
+  </div>
+{% endblock %}

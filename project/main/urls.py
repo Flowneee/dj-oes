@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^question/new/$', views.question_new_view, name='question_new'),
     url(r'^answer/new/$', views.answer_new_view, name='answer_new'),
     url(r'^search/$', views.SearchView.as_view(), name='search'),
+    url(r'upload_csv/$', views.UploadCsvView.as_view(), name='upload_csv'),
 ]

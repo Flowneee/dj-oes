@@ -18,3 +18,7 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ('text', 'question', 'is_true',)
+
+
+class UploadCsvForm(forms.Form):
+    file = forms.FileField()
