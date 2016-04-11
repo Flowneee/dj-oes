@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ template_title }}
+{% endblock %} 
+{% block content %}
+  <a href="{% url 'subject_list' %}"> <- Выбор темы</a> <br>
+  <h2>Информация о теме</h2><br>
+  Дата публикации  : {{ obj.pub_date }} <br>
+  Родительская тема:
+  {% if obj.parent_subject.id != None %}
+    <a href="{% url 'subject_detail' obj.parent_subject.id %}">{{ obj.parent_subject }}</a>
+  {% else %}
+    {{ obj.parent_subject }}
+  {% endif %}
+  <br><br>
+  <h2>Связанные вопросы</h2><br>
+  <ul>
+  {% for question in related %}
+    <li><a href="{% url 'question_detail' question.id %}">{{ question.text }}</a></li>
+  {% endfor %}
+  <ul>
+{% endblock %}

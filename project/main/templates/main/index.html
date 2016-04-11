@@ -1,4 +1,44 @@
 {% extends 'base.html' %}
 {% block title %}Главная{% endblock %}
 {% block content %}
+  <a href="{% url 'subject_list'%}"><h2>Темы</h2></a><br>
+  Последние добавленные:<br>
+  <ul>
+  {% for subject in latest_subjects %}
+    <li><a href="{% url 'subject_detail' subject.id %}">
+      {{ subject.pub_date}} &mdash; 
+      {{ subject.text }}
+    </a></li>
+  {% endfor %}
+  </ul>
+  <br>
+  <a href="{% url 'subject_new' %}">Добавить новую</a>
+  <br><br>
+  <a href="{% url 'question_list' %}"><h2>Вопросы</h2></a><br>
+  Последние добавленные:<br>
+  <ul>
+  {% for question in latest_questions %}
+    <li><a href="{% url 'question_detail' question.id %}">
+      {{ question.pub_date}} &mdash; 
+      {{ question.subject }} &mdash; 
+      {{ question.text }}
+    </a></li>
+  {% endfor %}
+  </ul>
+  <br>
+  <a href="{% url 'question_new' %}">Добавить новый</a>
+  <br><br>
+  <a href="{% url 'answer_list' %}"><h2>Ответы</h2></a><br>
+  Последние добавленные:<br>
+  <ul>
+  {% for answer in latest_answers %}
+    <li><a href="{% url 'answer_detail' answer.id %}">
+      {{ answer.pub_date}} &mdash; 
+      {{ answer.question }} &mdash; 
+      {{ answer.text }}
+    </a></li>
+  {% endfor %}
+  </ul>
+  <br>
+  <a href="{% url 'answer_new' %}">Добавить новый</a>
 {% endblock %}

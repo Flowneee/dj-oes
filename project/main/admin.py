@@ -7,7 +7,7 @@ class AnswerInLine(admin.TabularInline):
     extra = 4
 
 class QuestionAdmin(admin.ModelAdmin):
-    fields = ['text','subject',]
+    fields = ['text','subject','pub_date']
     inlines = [AnswerInLine]
 
 admin.site.register(Subject)

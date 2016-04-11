@@ -19,6 +19,12 @@ class Subject(models.Model):
         null=True
     )
 
+    pub_date = models.DateTimeField(
+        verbose_name=_('Дата публикации'),
+        blank=True,
+        null=True,
+    )
+
     class Meta:
         verbose_name = _('Тема')
         verbose_name_plural = _('Темы')
@@ -41,6 +47,12 @@ class Question(models.Model):
         verbose_name=_('Тема'),
         related_name='subject_questions',
     )
+
+    pub_date = models.DateTimeField(
+        verbose_name=_('Дата публикации'),
+        blank=True,
+        null=True,
+    )    
 
     class Meta:
         verbose_name = _('Вопрос')
@@ -68,6 +80,12 @@ class Answer(models.Model):
         verbose_name=_('Правильный'),
         blank=False,
     )
+
+    pub_date = models.DateTimeField(
+        verbose_name=_('Дата публикации'),
+        blank=True,
+        null=True,
+    )    
 
     class Meta:
         verbose_name = _('Ответ')
