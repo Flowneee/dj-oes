@@ -119,9 +119,9 @@ def AnswerView(request,answer_id):
 
 
 def index_view(request):
-    latest_subject_list = Subject.objects.order_by('pub_date')[:5]
-    latest_question_list = Question.objects.order_by('pub_date')[:5]
-    latest_answer_list = Answer.objects.order_by('pub_date')[:5]
+    latest_subject_list = Subject.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_answer_list = Answer.objects.order_by('-pub_date')[:5]
     context = {
         'latest_subjects': latest_subject_list,
         'latest_questions': latest_question_list,
