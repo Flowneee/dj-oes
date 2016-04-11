@@ -1,11 +1,13 @@
 # coding: utf-8
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from .models import Subject, Question, Answer
 from django.views.generic import ListView, TemplateView, DetailView, DeleteView
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse_lazy
-import datetime
+
+from main.forms import UploadCsvForm
+from main import file_handlers
 
 
 class SubjectListView(ListView):
@@ -24,7 +26,6 @@ class SubjectCreateView(CreateView):
     template_title = "Новая тема"
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.pub_date = datetime.datetime.now()
         '''
         Заполнение остальных полей
         '''
@@ -61,7 +62,6 @@ class QuestionCreateView(CreateView):
     template_title = "Новый вопрос"
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.pub_date = datetime.datetime.now()
         '''
         Заполнение остальных полей
         '''
@@ -98,7 +98,6 @@ class AnswerCreateView(CreateView):
     template_title = "Новый ответ"
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.pub_date = datetime.datetime.now()
         '''
         Заполнение остальных полей
         '''

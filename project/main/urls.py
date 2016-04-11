@@ -16,6 +16,6 @@ urlpatterns = [
     url(r'^answer/(?P<answer_id>[0-9]+)/$', views.AnswerView, name='answer_detail'),
 
     url(r'^search/$', views.SearchView.as_view(), name='search'),
-    url(r'upload_csv/$', views.UploadCsvView.as_view(), name='upload_csv'),
+    url(r'^upload_csv/$', views.UploadCsvView.as_view(), name='upload_csv'),
     url(r'^$', views.index_view, name='index'),
 ]

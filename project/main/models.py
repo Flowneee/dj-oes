@@ -2,7 +2,12 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
+class CustomMainManager(models.Manager):
+    def create(self, **kwargs):
+        now = timezone.now()
+        super(CustomMainManager, self).create(pub_date=now, **kwargs)
 
 class Subject(models.Model):
 
@@ -25,6 +30,8 @@ class Subject(models.Model):
         null=True,
     )
 
+    objects = CustomMainManager()
+
     class Meta:
         verbose_name = _('Тема')
         verbose_name_plural = _('Темы')
@@ -35,6 +42,9 @@ class Subject(models.Model):
     def get_absolute_url(self):
         return reverse('subject-detail', kwargs={'pk': self.pk})
 
+    def save(self, *args, **kwargs):
+        self.pub_date = timezone.now()
+        super(Subject, self).save()
 
 class Question(models.Model):
 
@@ -52,7 +62,9 @@ class Question(models.Model):
         verbose_name=_('Дата публикации'),
         blank=True,
         null=True,
-    )    
+    )
+
+    objects = CustomMainManager()
 
     class Meta:
         verbose_name = _('Вопрос')
@@ -62,8 +74,11 @@ class Question(models.Model):
         return self.text
 
     def get_absolute_url(self):
-        return reverse('subject-detail', kwargs={'pk': self.pk})        
+        return reverse('subject-detail', kwargs={'pk': self.pk})
 
+    def save(self, *args, **kwargs):
+        self.pub_date = timezone.now()
+        super(Question, self).save()
 
 class Answer(models.Model):
 
@@ -85,7 +100,9 @@ class Answer(models.Model):
         verbose_name=_('Дата публикации'),
         blank=True,
         null=True,
-    )    
+    )
+
+    objects = CustomMainManager()
 
     class Meta:
         verbose_name = _('Ответ')
@@ -95,4 +112,8 @@ class Answer(models.Model):
         return self.text
 
     def get_absolute_url(self):
-        return reverse('subject-detail', kwargs={'pk': self.pk})        
+        return reverse('subject-detail', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        self.pub_date = timezone.now()
+        super(Answer, self).save()
