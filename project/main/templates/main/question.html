@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ template_title }}
+{% endblock %} 
+{% block content %}
+  <a href="{% url 'question_list' %}"> <- Выбор вопроса</a> <br>
+  <h2>Информация о вопросе</h2><br>
+  Дата публикации  : {{ obj.pub_date }} <br>
+  Тема: <a href="{% url 'subject_detail' obj.subject.id %}">{{ obj.subject }}</a>
+  <br><br>
+  <h2>Варианты ответа</h2><br>
+  <ul>
+  {% for answer in related %}
+    <li><a href="{% url 'answer_detail' answer.id %}">{{ answer.text }}</a></li>
+  {% endfor %}
+  <ul>
+{% endblock %}
