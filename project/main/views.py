@@ -14,16 +14,19 @@ class SubjectListView(ListView):
     queryset = Subject.objects.order_by('parent_subject')
     template_name = 'main/subject_list.html'
     template_title = "Список тем"
+
     def get_context_data(self, **kwargs):
         ctx = super(SubjectListView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
+
 class SubjectCreateView(CreateView):
     model = Subject
-    fields = ['text','parent_subject',]
+    fields = ['text', 'parent_subject', ]
     template_name = 'main/add.html'
     template_title = "Новая тема"
+
     def form_valid(self, form):
         instance = form.save(commit=False)
         '''
@@ -31,17 +34,19 @@ class SubjectCreateView(CreateView):
         '''
         instance.save()
         return redirect(reverse_lazy('subject_list'))
+
     def get_context_data(self, **kwargs):
         ctx = super(SubjectCreateView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
-def SubjectView(request,subject_id):
+
+def SubjectView(request, subject_id):
     context = {
         'subjid': subject_id,
         'template_title': "Тема «" + Subject.objects.get(pk=subject_id).text + "»",
         'obj': Subject.objects.get(pk=subject_id),
-        'related': Question.objects.filter(subject = subject_id),
+        'related': Question.objects.filter(subject=subject_id),
         }
     return render(request, 'main/subject.html', context)
 
@@ -50,16 +55,19 @@ class QuestionListView(ListView):
     queryset = Question.objects.order_by('subject')
     template_name = 'main/question_list.html'
     template_title = "Список вопросов"
+
     def get_context_data(self, **kwargs):
         ctx = super(QuestionListView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
+
 class QuestionCreateView(CreateView):
     model = Question
-    fields = ['text','subject',]
+    fields = ['text' ,'subject', ]
     template_name = 'main/add.html'
     template_title = "Новый вопрос"
+
     def form_valid(self, form):
         instance = form.save(commit=False)
         '''
@@ -67,15 +75,18 @@ class QuestionCreateView(CreateView):
         '''
         instance.save()
         return redirect(reverse_lazy('question_list'))
+
     def get_context_data(self, **kwargs):
         ctx = super(QuestionCreateView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
-def QuestionView(request,question_id):
+
+def QuestionView(request, question_id):
     context = {
         'questid': question_id,
-        'template_title': "Вопрос «" + Question.objects.get(pk=question_id).text + "»",
+        'template_title': "Вопрос «" + Question.objects.get(pk=question_id).
+        text + "»",
         'obj': Question.objects.get(pk=question_id),
         'related': Answer.objects.filter(question=question_id),
         }
@@ -86,16 +97,19 @@ class AnswerListView(ListView):
     queryset = Answer.objects.order_by('question')
     template_name = 'main/answer_list.html'
     template_title = "Список ответов"
+
     def get_context_data(self, **kwargs):
         ctx = super(AnswerListView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
+
 class AnswerCreateView(CreateView):
     model = Answer
-    fields = ['text','question','is_true',]
+    fields = ['text', 'question', 'is_true', ]
     template_name = 'main/add.html'
     template_title = "Новый ответ"
+
     def form_valid(self, form):
         instance = form.save(commit=False)
         '''
@@ -103,12 +117,14 @@ class AnswerCreateView(CreateView):
         '''
         instance.save()
         return redirect(reverse_lazy('answer_list'))
+
     def get_context_data(self, **kwargs):
         ctx = super(AnswerCreateView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
 
-def AnswerView(request,answer_id):
+
+def AnswerView(request, answer_id):
     context = {
         'answid': answer_id,
         'template_title': "Ответ «" + Answer.objects.get(pk=answer_id).text + "»",
@@ -127,6 +143,7 @@ def index_view(request):
         'latest_answers': latest_answer_list,
         }
     return render(request, 'main/index.html',context)
+
 
 class SearchView(TemplateView): # затычка
     template_name = 'main/search.html'
