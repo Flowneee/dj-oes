@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    {% trans 'Все, что вам надо сделать, это выбрать тему ниже и нажать кнопку "Начать тестирование"' %}
+    <form method="GET" action="{% url 'community_test' %}" class="form-group">
+      <select size="30" class="form-control" name="subject_id">
+        {% for subject in subjects %}
+          <option value="{{ subject.record_id }}">{{ subject.string_repr|spacify }}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <button type="submit" class="btn btn-success btn-lg">
+        {% trans 'Начать тестирование' %} {% bootstrap_icon 'play' %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
