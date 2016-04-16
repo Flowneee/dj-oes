@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(
         verbose_name=_('Адрес электронной почты'),
-        max_length=254, blank=True,
+        max_length=254,
         validators=[EmailValidator(message=_('Введите корректный e-mail.')), ],
         unique=True,
     )

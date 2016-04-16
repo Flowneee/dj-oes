@@ -8,11 +8,14 @@
 
 {% block content %}
   <div class="col-xs-6 col-xs-offset-3">
-    {% trans 'Все, что вам надо сделать, это выбрать тему ниже и нажать кнопку "Начать тестирование"' %}
-    <form method="GET" action="{% url 'community_test' %}" class="form-group">
+    <p>{% trans 'Все, что вам надо сделать, это выбрать тему ниже и нажать кнопку "Начать тестирование".' %}</p>
+    <p>{% trans 'В тестирование будут включены все вопросы по выбранной теме и ее подтемам.' %}</p>
+    <form method="GET" action="{% url 'public_test' %}" class="form-group">
       <select size="30" class="form-control" name="subject_id">
         {% for subject in subjects %}
-          <option value="{{ subject.record_id }}">{{ subject.string_repr|spacify }}</option>
+          <option value="{{ subject.record_id }}">
+            {{ subject.string_repr|spacify }}
+          </option>
         {% endfor %}
       </select>
       <br>
