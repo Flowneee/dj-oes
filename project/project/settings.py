@@ -27,6 +27,7 @@ INSTALLED_APPS = (
 
     'accounts',
     'main',
+    'tutor',
 )
 
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'

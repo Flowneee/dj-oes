@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^main/', include('main.urls')),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^admin/', include('accounts.admin_urls')),
+    url(r'^tutor/', include('tutor.urls'))
 ]
 
 if settings.DEBUG:

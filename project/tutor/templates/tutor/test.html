@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ template_title }}{% endblock %}
+{% block content %}
+      <ul>
+      {% for question in obj.questions.all %}
+        <li>
+          {{ question.text }}
+          <ul>
+          {% for answer in question.question_answers.all %}
+            <li>{{ answer.text }}</li>
+          {% endfor %}
+          </ul>
+        </li>
+        <ul>
+        {% for answer in question_answers.all %}
+          <li>{ answer.text }</li>
+        {% endfor %}
+        </ul>
+      {% endfor %}
+      </ul>
+{% endblock %}

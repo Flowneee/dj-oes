@@ -64,7 +64,7 @@ class QuestionListView(ListView):
 
 class QuestionCreateView(CreateView):
     model = Question
-    fields = ['text' ,'subject', ]
+    fields = ['text', 'subject', ]
     template_name = 'main/add.html'
     template_title = "Новый вопрос"
 
