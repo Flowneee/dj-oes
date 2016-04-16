@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    <p class="subject-text"><b>{% trans 'Тема' %}</b>: {{ subject_breadcrumbs }}</p>
+    <div id="question">
+
+    </div>
+    <form role="form" method="GET" action="{% url 'index' %}" style="margin-top: 10px;">
+      <button class="btn btn-primary btn-lg" type="Submit">
+        {% trans 'Вернуться на главную' %}
+      </button>
+    </form>
+    <form role="form" method="GET" action="{% url 'public_testing_main' %}"
+          style="margin-top: 10px;">
+      <button class="btn btn-primary btn-lg" type="Submit">
+        {% trans 'Вернуться к выбору тем' %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript">
+   function replaceQuestion(content) {
+     $("#question").replaceWith(content.template);
+   };
+   ajaxGet("/public_testing/ajax_get_public_question/?subject_id={{ subject_id }}",
+           replaceQuestion);
+  </script>
+{% endblock %}

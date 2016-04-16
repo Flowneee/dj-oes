@@ -12,17 +12,6 @@ from .forms import UserChangeForm, UserCreationForm
 
 
 class UserAdmin(aauth.UserAdmin):
-    fieldsets = (
-        (None, {'fields': ('full_name', 'password')}),
-        (_('Персональная информация'), {'fields': (
-            'email', 'last_name', 'first_name',
-            'patronymic')}),
-        (_('Права'), {'fields': (
-            'account_level', 'is_staff', 'is_superuser',
-            'groups', 'user_permissions')}),
-        (_('Важные даты'), {'fields': ('last_login', 'date_joined')}),
-    )
-    readonly_fields = ['full_name', 'email']
 
     def full_name(self, obj):
         return obj.get_full_name()
@@ -32,9 +21,26 @@ class UserAdmin(aauth.UserAdmin):
         (None, {
             'classes': ('wide', ),
             'fields': ('email',  'last_name', 'first_name',
-                       'patronymic', 'is_active', 'is_staff', 'is_superuser'
+                       'patronymic', 'is_active', 'is_staff', 'is_superuser',
                        'account_level', 'password1', 'password2', )}, ),
     )
+    fieldsets = (
+        (None, {'fields': ('full_name', 'password', 'email')}),
+        (_('Персональная информация'), {'fields': (
+            'email', 'last_name', 'first_name',
+            'patronymic')}),
+        (_('Права'), {'fields': (
+            'account_level', 'is_staff', 'is_superuser',
+            'groups', 'user_permissions')}),
+        (_('Важные даты'), {'fields': ('last_login', 'date_joined')}),
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj: # editing an existing object
+            return self.readonly_fields + ['email']
+        return self.readonly_fields
+
+    readonly_fields = ['full_name']
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = ('email', 'last_name', 'first_name', 'patronymic',

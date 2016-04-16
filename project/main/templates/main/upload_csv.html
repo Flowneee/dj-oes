@@ -9,7 +9,7 @@
     <div class="alert alert-warning">
       <strong>{% trans 'Внимание!' %}</strong> {% trans 'Процесс обработки файла может занять некоторое время.' %}
     </div>
-    <form method="POST" action="{% url 'upload_csv' %}" enctype="multipart/form-data">
+    <form role="form" method="POST" action="{% url 'upload_csv' %}" enctype="multipart/form-data">
       {% csrf_token %}
       {% bootstrap_form form %}
       {% buttons %}

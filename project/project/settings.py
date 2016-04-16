@@ -1,12 +1,17 @@
 import os
 import django
 from django.core.urlresolvers import reverse_lazy
+import pprint
 
 import project.private_settings as ps
 
 BASE_DIR = ps.BASE_DIR
 SECRET_KEY = ps.SECRET_KEY
+
 DEBUG = True
+DEBUG_OUTPUT = True
+debug_print = pprint.PrettyPrinter(indent=4).pprint
+
 ALLOWED_HOSTS = ps.ALLOWED_HOSTS
 ADMINS = ps.ADMINS
 DATABASES = ps.DATABASES
@@ -27,6 +32,7 @@ INSTALLED_APPS = (
 
     'accounts',
     'main',
+    'public_testing',
 )
 
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'

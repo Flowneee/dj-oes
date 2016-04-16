@@ -1,0 +1,49 @@
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+<div id="question">
+  <b class="question_text">{% trans 'Вопрос' %}: </b>
+  <p class="question_text">{{ question.text }}</p>
+
+  <h1>
+    <b>
+    {% if is_answers_correct == True %}
+      {% trans 'Верно' %}
+    {% else %}
+      {% trans 'Неверно' %}
+    {% endif %}!
+    </b>
+  </h1>
+
+  {% for answer in answers_to_template %}
+    <div class="{{ element_type }}">
+      <label>
+        <input type="{{ element_type }}" name="answers"
+               value="{{ answer.0.id }}"
+               disabled>
+        <p class="{{ answer.2 }}">{{ answer.0.text }}
+          {% if answer.1 == True %}
+            {% bootstrap_icon 'ok' %}
+          {% elif answer.1 == False %}
+            {% bootstrap_icon 'remove' %}
+          {% endif %}
+        </p>
+      </label>
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary btn-lg" id="next-question-button">
+    {% trans 'Следующий вопрос' %}
+  </button>
+</div>
+
+<script type="text/javascript">
+ function replaceQuestion(content) {
+   $("#question").replaceWith(content.template);
+ };
+ $("#next-question-button").click(
+   function() {
+     ajaxGet("/public_testing/ajax_get_public_question/?subject_id={{ subject_id }}",
+             replaceQuestion);
+   }
+ )
+</script>

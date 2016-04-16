@@ -3,11 +3,14 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.core.urlresolvers import reverse
+
 
 class CustomMainManager(models.Manager):
     def create(self, **kwargs):
         now = timezone.now()
         super(CustomMainManager, self).create(pub_date=now, **kwargs)
+
 
 class Subject(models.Model):
 
@@ -46,6 +49,7 @@ class Subject(models.Model):
         self.pub_date = timezone.now()
         super(Subject, self).save()
 
+
 class Question(models.Model):
 
     text = models.TextField(
@@ -79,6 +83,10 @@ class Question(models.Model):
     def save(self, *args, **kwargs):
         self.pub_date = timezone.now()
         super(Question, self).save()
+
+    def is_only_answer(self):
+        return len(self.question_answers.filter(is_true=True)) == 1
+
 
 class Answer(models.Model):
 
