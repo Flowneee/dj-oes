@@ -2,6 +2,7 @@ import os
 import django
 from django.core.urlresolvers import reverse_lazy
 import pprint
+import ckeditor_settings
 
 import project.private_settings as ps
 
@@ -141,3 +142,5 @@ if DEBUG:
       'all_applications': True,
       'group_models': True,
     }
+
+CKEDITOR_CONFIGS = ckeditor_settings.CKEDITOR_CONFIGS
