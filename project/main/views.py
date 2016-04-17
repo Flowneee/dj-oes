@@ -238,7 +238,7 @@ class UploadCsvView(TemplateView):
         context = self.get_context_data()
        # if context["form"].is_valid():
         self.parse_state, self.errors = file_handlers.\
-            parse_csv(request.FILES['file'])
+            parse_csv(request.FILES['file'], request.user)
         print(self.parse_state)
         context["errors"] = self.errors
         context["parse_state"] = self.parse_state

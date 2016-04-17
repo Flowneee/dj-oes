@@ -1,19 +1,29 @@
 # coding: utf-8
 
 from django.shortcuts import render, redirect
-from .models import Test
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse_lazy
 from django import forms
+from django.views.generic import TemplateView
 
 from main import dropdown
 from main.models import Subject, Question
-from django.views.generic import TemplateView
+from .models import Test
+from project.settings import DEBUG_OUTPUT, debug_print
 
 
 def index_view(request):
     context = {}
     return render(request, 'tutor/tutor.html', context)
+
+
+def get_subject_subtree_as_list(subject):
+    subjects = [subject, ]
+    for i in Subject.objects.filter(parent_subject=subject):
+        subjects += get_subject_subtree_as_list(i)
+    if DEBUG_OUTPUT:
+        debug_print(subjects)
+    return subjects
 
 
 class TestForm(forms.ModelForm):
@@ -26,10 +36,26 @@ class TestForm(forms.ModelForm):
         subject_id = kwargs.pop('subject_id')
         super(TestForm, self).__init__(*args, **kwargs)
         self.fields['questions'] = forms.ModelMultipleChoiceField(
-            queryset=Question.objects.filter(subject=Subject.objects.get(
-                pk=subject_id)),
+            queryset=Question.objects.filter(
+                subject__in=get_subject_subtree_as_list(
+                    Subject.objects.get(pk=subject_id)
+                )
+            ),
             widget=forms.CheckboxSelectMultiple
         )
+
+
+def get_questions(subject):
+    def get_all_questions(subject):
+        questions = list(Question.objects.filter(subject=subject))
+        for i in Subject.objects.filter(parent_subject=subject):
+            questions += list(get_all_questions(i))
+        return questions
+
+    questions = list(get_all_questions(subject))
+    if DEBUG_OUTPUT:
+        debug_print(questions)
+    return questions
 
 
 class TestCreateView(CreateView):
@@ -39,7 +65,9 @@ class TestCreateView(CreateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.creator = self.request.user
-        instance.subject = Subject.objects.get(pk=self.subject_id)
+        instance.subject = Subject.objects.get(
+            pk=self.request.GET['subject_id']
+        )
         instance.save()
         form.save_m2m()
         return redirect(reverse_lazy('tutor_subject_list'))
@@ -61,10 +89,11 @@ class TestCreateView(CreateView):
         except:
             subject_id = 1
         else:
-            subject_id = self.request.GET['subject_id']   
-        ctx['template_title'] = "Новый тест по теме «" + Subject.objects.get(
-                pk=subject_id).text + "»"
+            subject_id = self.request.GET['subject_id']
+        subject = Subject.objects.get(pk=subject_id)
+        ctx['template_title'] = "Новый тест по теме «" + subject.text + "»"
         return ctx
+
 
 def TestView(request, test_id):
     context = {

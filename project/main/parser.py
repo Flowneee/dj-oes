@@ -104,7 +104,7 @@ def parse_answers(answers, line_number):
     return answers, ret_status, errors
 
 
-def parse_csv_file(file_name, error_level='error'):
+def parse_csv_file(file_name, user, error_level='error'):
 
     def write_line_to_error(errors, error_level):
         for e in errors:
@@ -132,7 +132,8 @@ def parse_csv_file(file_name, error_level='error'):
         for s in subjects:
             subject, s_created = Subject.objects.get_or_create(
                 text=s,
-                parent_subject=subject
+                parent_subject=subject,
+                creator=user,
             )
 
         question, ret, errs = parse_question(row[1], i)
@@ -145,6 +146,7 @@ def parse_csv_file(file_name, error_level='error'):
         question, q_created = Question.objects.get_or_create(
             text=question,
             subject=subject,
+            creator=user,
         )
 
         answers, ret, errs = parse_answers(row[2:], i)
@@ -158,7 +160,8 @@ def parse_csv_file(file_name, error_level='error'):
             answer, a_created = Answer.objects.get_or_create(
                 text=a[:-1].strip(),
                 question=question,
-                is_true=bool(int(a[-1]))
+                is_true=bool(int(a[-1])),
+                creator=user,
             )
 
     return ret_state, errors

@@ -15,7 +15,6 @@ from project.settings import DEBUG_OUTPUT, debug_print
 from public_testing.models import PublicTestResult
 
 
-
 class MainPublicTestingView(TemplateView):
     template_name = 'public_testing/main.html'
 
@@ -35,7 +34,6 @@ def construct_subject_breadcrumbs(subject):
     return string
 
 
-<<<<<<< HEAD
 def get_answers(question):
     answers = question.question_answers.all()
     out = []
@@ -212,22 +210,6 @@ class AJAXPublicTestResultsView(AJAXMixin, TemplateView):
 
 
 
-
-
-
-
-=======
-class PublicTestView(TemplateView):
-    template_name = 'public_testing/test.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PublicTestView, self).get_context_data(**kwargs)
-        context['subject_breadcrumbs'] = construct_subject_breadcrumbs(
-            Subject.objects.get(id=int(self.request.GET['subject_id'])))
-        context['subject_id'] = self.request.GET['subject_id']
-        return context
-
->>>>>>> feature-testadd
 
 class AJAXGetPublicQuestionView(AJAXMixin, TemplateView):
 
