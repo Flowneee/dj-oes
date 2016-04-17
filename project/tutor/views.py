@@ -1,5 +1,7 @@
 # coding: utf-8
 
+import json
+
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse_lazy
@@ -8,7 +10,7 @@ from django.views.generic import TemplateView
 
 from main import dropdown
 from main.models import Subject, Question
-from .models import Test
+from .models import Test, get_test_json_from_test
 from project.settings import DEBUG_OUTPUT, debug_print
 
 
@@ -30,7 +32,7 @@ class TestForm(forms.ModelForm):
 
     class Meta(object):
         model = Test
-        fields = ['text', 'comment', 'questions']
+        fields = ['text', 'comment', 'time_for_test', 'study_groups', 'questions']
 
     def __init__(self, *args, **kwargs):
         subject_id = kwargs.pop('subject_id')
@@ -45,19 +47,6 @@ class TestForm(forms.ModelForm):
         )
 
 
-def get_questions(subject):
-    def get_all_questions(subject):
-        questions = list(Question.objects.filter(subject=subject))
-        for i in Subject.objects.filter(parent_subject=subject):
-            questions += list(get_all_questions(i))
-        return questions
-
-    questions = list(get_all_questions(subject))
-    if DEBUG_OUTPUT:
-        debug_print(questions)
-    return questions
-
-
 class TestCreateView(CreateView):
     form_class = TestForm
     template_name = 'main/add.html'
@@ -70,6 +59,8 @@ class TestCreateView(CreateView):
         )
         instance.save()
         form.save_m2m()
+        instance.test_json = json.dumps(get_test_json_from_test(instance))
+        instance.save()
         return redirect(reverse_lazy('tutor_subject_list'))
 
     def get_form_kwargs(self):
@@ -96,9 +87,10 @@ class TestCreateView(CreateView):
 
 
 def TestView(request, test_id):
+    test = Test.objects.get(pk=test_id)
     context = {
-        'template_title': "Тест «" + Test.objects.get(pk=test_id).text + "»",
-        'obj': Test.objects.get(pk=test_id),
+        'template_title': "Тест «" + test.text + "»",
+        'obj': test,
         }
     return render(request, 'tutor/test.html', context)
 

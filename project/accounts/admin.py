@@ -20,15 +20,15 @@ class UserAdmin(aauth.UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide', ),
-            'fields': ('email',  'last_name', 'first_name',
-                       'patronymic', 'is_active', 'is_staff', 'is_superuser',
-                       'account_level', 'password1', 'password2', )}, ),
+            'fields': ('email',  'last_name', 'first_name', 'patronymic',
+                       'is_active', 'is_staff', 'is_superuser', 'account_level',
+                       'study_group', 'password1', 'password2', )}, ),
     )
     fieldsets = (
         (None, {'fields': ('full_name', 'password', 'email')}),
         (_('Персональная информация'), {'fields': (
             'email', 'last_name', 'first_name',
-            'patronymic')}),
+            'patronymic', 'study_group')}),
         (_('Права'), {'fields': (
             'account_level', 'is_staff', 'is_superuser',
             'groups', 'user_permissions')}),

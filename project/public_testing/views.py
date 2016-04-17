@@ -174,7 +174,8 @@ class AJAXPublicTestResultsView(AJAXMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         self.template_name = 'public_testing/ajax_test_results.html'
         context = self.get_context_data(**kwargs)
-        debug_print(request.POST)
+        if DEBUG_OUTPUT:
+            debug_print(request.POST)
         test_results = PublicTestResult.objects.get(
             id=int(request.POST['test_id'])
         )
@@ -188,6 +189,8 @@ class AJAXPublicTestResultsView(AJAXMixin, TemplateView):
             else:
                 for j in selection:
                     i['selection'].append(int(j))
+        if DEBUG_OUTPUT:
+            debug_print(test_json)
 
         test_results_content,\
             number_of_correct_answers = create_test_result_content_from_json(
@@ -195,10 +198,12 @@ class AJAXPublicTestResultsView(AJAXMixin, TemplateView):
             )
 
         test_results.json_log = json.dumps(test_json)
+        test_results.result = number_of_correct_answers
         context['test'] = test_results
         context['test_results_content'] = test_results_content
         context['number_of_correct_answers'] = number_of_correct_answers
         test_results.is_completed = True
+        test_results.save()
         return render(request, self.template_name, context)
 
 

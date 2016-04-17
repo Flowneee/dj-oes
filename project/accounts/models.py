@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     patronymic = models.CharField(
         verbose_name=_('Отчество'),
         max_length=75, blank=True,
-        null=True,
+        null=True, default='',
         validators=[NameValidator(), ]
     )
     study_group = models.CharField(
@@ -124,7 +124,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         short_name = '{0} {1}.'.format(self.last_name, str(self.first_name)[0])
-        if (str(self.patronymic) != ''):
+        if (str(self.patronymic) != '') and (self.patronymic is not None):
             short_name += str(self.patronymic)[0] + '.'
         return short_name.strip()
 
