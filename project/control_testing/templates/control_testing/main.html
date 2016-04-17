@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Контрольное тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    {% if avaliable_tests|length == 0 %}
+      <h2>{% trans 'Нет доступных для прохождения контрольных тестов.' %}</h2>
+    {% else %}
+      <h2>{% trans 'Доступные для прохождения тесты:' %}</h2>
+      <ul>
+        {% for i in avaliable_tests %}
+          <li>
+            <a href="{% url 'control_test_details_before_testing' %}?test_id={{ i.id }}">
+              {{ i.text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}

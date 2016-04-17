@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    <div id="test-div">
+      <div class="panel panel-default">
+        <div class="panel-heading">{% trans 'Информация о тесте' %}</div>
+        <div class="panel-body">
+          <p>{% trans 'ID' %}: {{ test.id }}</p>
+          <p>{% trans 'Название' %}: {{ test.text }}</p>
+          <p>{% trans 'Тема' %}: {{ subject_breadcrumbs }}</p>
+          <p>{% trans 'Автор' %}: {{ test.creator.get_short_name }}</p>
+          <p>{% trans 'Время на прохождение' %}: {{ test.time_for_test }}
+            {% trans 'минут' %}</p>
+        </div>
+      </div>
+      <form id="test-form" method="POST" action="{% url 'public_test' %}">
+        {% csrf_token %}
+        {% for obj in test_content %}
+          <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text|safe }}
+          {% for answer in obj.answers %}
+            <div class="{{ obj.element_type }}">
+              <label name="{{ obj.question.id }}">
+                <input type="{{ obj.element_type }}" name="{{ obj.question.id }}"
+                       value="{{ answer.id }}">{{ answer.text|safe }}
+              </label>
+            </div>
+          {% endfor %}
+        {% endfor %}
+        <input type="hidden" name="test_id" value="{{ test.id }}">
+      </form>
+      <button class="btn btn-success btn-lg" type="button" id="submit-button" disabled>
+        {% trans 'Готово'  %}
+      </button>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+   $("#submit-button").click(function () {
+     ajaxPost("{% url 'ajax_control_test_results' %}",
+              $("#test-form").serialize(),
+              function (content) {
+                $("#test-div").replaceWith(content)
+              });
+   })
+   var is_radio_answered = false
+   function activate_submit_button() {
+     if (is_radio_answered) {
+       $("#submit-button").removeAttr("disabled");
+     };
+   }
+   $(":radio").change(function() {
+     var names = {};
+     $(':radio').each(function() {
+       names[$(this).attr('name')] = true;
+     });
+     var count = 0;
+     $.each(names, function() {
+       count++;
+     });
+     if ($(':radio:checked').length === count) {
+       is_radio_answered = true;
+       activate_submit_button();
+     }
+   }).change();
+  </script>
+  <script type="text/javascript" async
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+  </script>
+{% endblock %}

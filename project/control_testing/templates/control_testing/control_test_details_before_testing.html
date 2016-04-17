@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Контрольное тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">{% trans 'Информация о тесте' %}</div>
+      <div class="panel-body">
+        <p>{% trans 'ID' %}: {{ test.id }}</p>
+        <p>{% trans 'Название' %}: {{ test.text }}</p>
+        <p>{% trans 'Тема' %}: {{ subject_breadcrumbs }}</p>
+        <p>{% trans 'Автор' %}: {{ test.creator.get_short_name }}</p>
+        <p>{% trans 'Время на прохождение' %}: {{ test.time_for_test }}
+          {% trans 'минут' %}</p>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <strong>{% trans 'Внимание!' %}</strong> {% trans 'Прохождение теста возможно только один раз. После нажатия кнопки "Начать тестирование" нельзя отменить свое решение. Ответы необходимо отправить в течение времени, указанном в Информации о тесте. По истечении этого времени ответы не будут приняты.' %}
+    </div>
+    <form method="GET" action="{% url 'control_test' %}">
+      <input type="hidden" name="test_id" value="{{ test.id }}">
+      <button class="btn btn-success btn-lg" type="submit"
+              id="control-test-start-button">
+        {% trans 'Начать тестирование' %} {% bootstrap_icon 'play' %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
