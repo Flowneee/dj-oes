@@ -13,7 +13,8 @@
       <ul>
       {% for question in obj.questions.all %}
         <li>
-          {{ question.text }}
+          {{ question.text }}<br>
+          {{ question.text_full|safe }}
           <ul>
           {% for answer in question.question_answers.all %}
             <li>{{ answer.text }}</li>
@@ -22,7 +23,7 @@
         </li>
         <ul>
         {% for answer in question_answers.all %}
-          <li>{ answer.text }</li>
+          <li>{ answer.text|safe }</li>
         {% endfor %}
         </ul>
       {% endfor %}

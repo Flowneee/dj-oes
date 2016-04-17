@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Главная{% endblock %}
 {% block content %}
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+  </script>  
   <a href="{% url 'subject_list'%}"><h2>Темы</h2></a><br>
   Последние добавленные:<br>
   <ul>
@@ -35,7 +41,7 @@
     <li><a href="{% url 'answer_detail' answer.id %}">
       {{ answer.pub_date}} &mdash; 
       {{ answer.question }} &mdash; 
-      {{ answer.text }}
+      {{ answer.text|safe }}
     </a></li>
   {% endfor %}
   </ul>

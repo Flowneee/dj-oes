@@ -9,6 +9,8 @@ from django.core.urlresolvers import reverse_lazy
 from main.forms import UploadCsvForm
 from main import file_handlers
 
+import accounts
+
 
 class SubjectListView(ListView):
     queryset = Subject.objects.order_by('parent_subject')
@@ -29,9 +31,7 @@ class SubjectCreateView(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        instance.creator = self.request.user
         instance.save()
         return redirect(reverse_lazy('subject_list'))
 
@@ -64,15 +64,13 @@ class QuestionListView(ListView):
 
 class QuestionCreateView(CreateView):
     model = Question
-    fields = ['text', 'subject', ]
+    fields = ['text', 'text_full', 'subject', ]
     template_name = 'main/add.html'
     template_title = "Новый вопрос"
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        instance.creator = self.request.user
         instance.save()
         return redirect(reverse_lazy('question_list'))
 
@@ -112,9 +110,7 @@ class AnswerCreateView(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        instance.creator = self.request.user
         instance.save()
         return redirect(reverse_lazy('answer_list'))
 
@@ -127,7 +123,8 @@ class AnswerCreateView(CreateView):
 def AnswerView(request, answer_id):
     context = {
         'answid': answer_id,
-        'template_title': "Ответ «" + Answer.objects.get(pk=answer_id).text + "»",
+        'template_title': "Ответ на вопрос «" + Answer.objects.get(
+            pk=answer_id).question.text + '»',
         'obj': Answer.objects.get(pk=answer_id),
         }
     return render(request, 'main/answer.html', context)
@@ -142,7 +139,7 @@ def index_view(request):
         'latest_questions': latest_question_list,
         'latest_answers': latest_answer_list,
         }
-    return render(request, 'main/index.html',context)
+    return render(request, 'main/index.html', context)
 
 
 class SearchView(TemplateView): # затычка
