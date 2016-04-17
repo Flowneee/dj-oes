@@ -6,7 +6,11 @@
   </script>
   <script type="text/javascript" async
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
-  </script>  
+  </script> 
+  <a href="{%url 'upload_csv' %}"> Загрузить вопросы файлом</a> &nbsp &nbsp
+  <a href="{%url 'tutor_subject_list' %}"> Список тестов</a> &nbsp &nbsp
+  <a href="{%url 'choise_test_list' %}"> Составить тест</a> &nbsp &nbsp
+  <a href="{%url 'public_testing_main' %}"> Пройти тестирование </a></br>
   <a href="{% url 'subject_list'%}"><h2>Темы</h2></a><br>
   Последние добавленные:<br>
   <ul>
@@ -46,5 +50,5 @@
   {% endfor %}
   </ul>
   <br>
-  <a href="{% url 'answer_new' %}">Добавить новый</a>
-{% endblock %}
+  <a href="{% url 'answer_new' %}">Добавить новый</a><br>
+  {% endblock %}

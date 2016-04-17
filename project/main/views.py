@@ -60,6 +60,13 @@ class QuestionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         answer_q = kwargs.pop('answer_q')
         super(QuestionForm, self).__init__(*args, **kwargs)
+        self.fields['new_subject'] = forms.CharField(
+                label="Новая тема",
+                help_text="Если необходимая тема отсутствует в списке, " +
+                "введите название новой темы в данное поле и установите " +
+                "родительскую тему в предыдущем поле",
+                required=False,
+            )
         ans = ['arg0', 'arg1', 'arg2', 'arg3', 'arg4',
                 'arg5', 'arg6', 'arg7', 'arg8', 'arg9']
         ans_true = ['argt0', 'argt1', 'argt2', 'argt3', 'argt4',
@@ -103,7 +110,17 @@ class QuestionCreateView(CreateView):
                 answer_q = int(self.request.GET['a'])
             else:
                 answer_q = 10
+
         instance = form.save(commit=False)
+        if form.cleaned_data['new_subject'] != "":
+            s = Subject(
+                    text=form.cleaned_data['new_subject'],
+                    parent_subject=instance.subject,
+                    creator=self.request.user,
+                )
+            s.save()
+            instance.subject = s
+
         instance.creator = self.request.user
         instance.save()
         ans = ['arg0', 'arg1', 'arg2', 'arg3', 'arg4',
