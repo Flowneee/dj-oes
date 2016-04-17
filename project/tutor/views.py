@@ -28,18 +28,13 @@ class TestForm(forms.ModelForm):
         self.fields['questions'] = forms.ModelMultipleChoiceField(
             queryset=Question.objects.filter(subject=Subject.objects.get(
                 pk=subject_id)),
-            widget=forms.CheckboxSelectMultiple)
+            widget=forms.CheckboxSelectMultiple
+        )
 
 
 class TestCreateView(CreateView):
     form_class = TestForm
     template_name = 'main/add.html'
-    try:
-        self.request.GET['subject_id']
-    except:
-        subject_id = 1
-    else:
-        subject_id = self.request.GET['subject_id']
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -51,15 +46,25 @@ class TestCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(TestCreateView, self).get_form_kwargs()
-        kwargs['subject_id'] = self.subject_id
+        try:
+            self.request.GET['subject_id']
+        except:
+            kwargs['subject_id'] = 1
+        else:
+            kwargs['subject_id'] = self.request.GET['subject_id']
         return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super(TestCreateView, self).get_context_data(**kwargs)
+        try:
+            self.request.GET['subject_id']
+        except:
+            subject_id = 1
+        else:
+            subject_id = self.request.GET['subject_id']   
         ctx['template_title'] = "Новый тест по теме «" + Subject.objects.get(
-                pk=self.subject_id).text + "»"
+                pk=subject_id).text + "»"
         return ctx
-
 
 def TestView(request, test_id):
     context = {

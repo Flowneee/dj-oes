@@ -2,11 +2,13 @@
 {% block title %}
   {{ template_title }}
 {% endblock %}  
-{% block content %}    
-  <form method="POST" class="subject-form">
-    {% csrf_token %}
-    {{ form.media }}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Сохранить</button>
-  </form>
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">    
+    <form method="POST" class="subject-form">
+      {% csrf_token %}
+      {{ form.media }}
+      {{ form.as_p }}
+      <button type="submit" class="save btn btn-default">Сохранить</button>
+    </form>
+  </div> 
 {% endblock %}
