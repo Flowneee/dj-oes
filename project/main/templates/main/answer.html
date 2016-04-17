@@ -3,7 +3,14 @@
   {{ template_title }}
 {% endblock %} 
 {% block content %}
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+  </script>  
   <a href="{% url 'answer_list' %}"> <- Выбор ответа</a> <br>
+  <h2>Ответ:</h2>{{ obj.text|safe }}
   <h2>Информация об ответе</h2><br>
   Дата публикации  : {{ obj.pub_date }} <br>
   Вопрос: <a href="{% url 'question_detail' obj.question.id %}">{{ obj.question }}</a> 

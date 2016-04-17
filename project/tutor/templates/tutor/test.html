@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ template_title }}{% endblock %}
+{% block content %}
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+  </script>  
+  <h2>Описание:</h2><br>
+   {{ obj.comment|safe }}
+  <h2>Вопросы:</h2><br>
+      <ul>
+      {% for question in obj.questions.all %}
+        <li>
+          {{ question.text }}<br>
+          {{ question.text_full|safe }}
+          <ul>
+          {% for answer in question.question_answers.all %}
+            <li>{{ answer.text }}</li>
+          {% endfor %}
+          </ul>
+        </li>
+        <ul>
+        {% for answer in question_answers.all %}
+          <li>{ answer.text|safe }</li>
+        {% endfor %}
+        </ul>
+      {% endfor %}
+      </ul>
+{% endblock %}

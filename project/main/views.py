@@ -5,9 +5,11 @@ from .models import Subject, Question, Answer
 from django.views.generic import ListView, TemplateView, DetailView, DeleteView
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse_lazy
-
+from django import forms
 from main.forms import UploadCsvForm
 from main import file_handlers
+from ckeditor.widgets import CKEditorWidget
+import accounts
 
 
 class SubjectListView(ListView):
@@ -29,9 +31,7 @@ class SubjectCreateView(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        instance.creator = self.request.user
         instance.save()
         return redirect(reverse_lazy('subject_list'))
 
@@ -51,6 +51,39 @@ def SubjectView(request, subject_id):
     return render(request, 'main/subject.html', context)
 
 
+class QuestionForm(forms.ModelForm):
+
+    class Meta(object):
+        model = Question
+        fields = ['text', 'text_full', 'subject', ]
+
+    def __init__(self, *args, **kwargs):
+        answer_q = kwargs.pop('answer_q')
+        super(QuestionForm, self).__init__(*args, **kwargs)
+        self.fields['new_subject'] = forms.CharField(
+                label="Новая тема",
+                help_text="Если необходимая тема отсутствует в списке, " +
+                "введите название новой темы в данное поле и установите " +
+                "родительскую тему в предыдущем поле",
+                required=False,
+            )
+        ans = ['arg0', 'arg1', 'arg2', 'arg3', 'arg4',
+                'arg5', 'arg6', 'arg7', 'arg8', 'arg9']
+        ans_true = ['argt0', 'argt1', 'argt2', 'argt3', 'argt4',
+                'argt5', 'argt6', 'argt7', 'argt8', 'argt9']
+        i = 0
+        while answer_q > i:
+            self.fields[ans[i]] = forms.CharField(
+                label="Ответ " + str(i+1),
+                widget=CKEditorWidget())
+            self.fields[ans_true[i]] = forms.BooleanField(
+                label="Правильный",
+                required=False,
+            )
+            i += 1
+
+
+
 class QuestionListView(ListView):
     queryset = Question.objects.order_by('subject')
     template_name = 'main/question_list.html'
@@ -63,23 +96,66 @@ class QuestionListView(ListView):
 
 
 class QuestionCreateView(CreateView):
-    model = Question
-    fields = ['text' ,'subject', ]
+    form_class = QuestionForm
     template_name = 'main/add.html'
     template_title = "Новый вопрос"
 
     def form_valid(self, form):
+        try:
+            int(self.request.GET['a'])
+        except:
+            answer_q = 4
+        else:
+            if int(self.request.GET['a']) < 10:
+                answer_q = int(self.request.GET['a'])
+            else:
+                answer_q = 10
+
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        if form.cleaned_data['new_subject'] != "":
+            s = Subject(
+                    text=form.cleaned_data['new_subject'],
+                    parent_subject=instance.subject,
+                    creator=self.request.user,
+                )
+            s.save()
+            instance.subject = s
+
+        instance.creator = self.request.user
         instance.save()
+        ans = ['arg0', 'arg1', 'arg2', 'arg3', 'arg4',
+                'arg5', 'arg6', 'arg7', 'arg8', 'arg9']
+        ans_true = ['argt0', 'argt1', 'argt2', 'argt3', 'argt4',
+                'argt5', 'argt6', 'argt7', 'argt8', 'argt9']
+        i = 0
+        while answer_q > i:
+            a = Answer(
+                text=form.cleaned_data[ans[i]],
+                question=instance,
+                creator=self.request.user,
+                is_true=form.cleaned_data[ans_true[i]],
+            )
+            a.save()
+            i += 1
         return redirect(reverse_lazy('question_list'))
 
     def get_context_data(self, **kwargs):
         ctx = super(QuestionCreateView, self).get_context_data(**kwargs)
         ctx['template_title'] = self.template_title
         return ctx
+
+    def get_form_kwargs(self):
+        kwargs = super(QuestionCreateView, self).get_form_kwargs()
+        try:
+            int(self.request.GET['a'])
+        except:
+            kwargs['answer_q'] = 4
+        else:
+            if int(self.request.GET['a']) < 10:
+                kwargs['answer_q'] = int(self.request.GET['a'])
+            else:
+                kwargs['answer_q'] = 10
+        return kwargs
 
 
 def QuestionView(request, question_id):
@@ -112,9 +188,7 @@ class AnswerCreateView(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        '''
-        Заполнение остальных полей
-        '''
+        instance.creator = self.request.user
         instance.save()
         return redirect(reverse_lazy('answer_list'))
 
@@ -127,7 +201,8 @@ class AnswerCreateView(CreateView):
 def AnswerView(request, answer_id):
     context = {
         'answid': answer_id,
-        'template_title': "Ответ «" + Answer.objects.get(pk=answer_id).text + "»",
+        'template_title': "Ответ на вопрос «" + Answer.objects.get(
+            pk=answer_id).question.text + '»',
         'obj': Answer.objects.get(pk=answer_id),
         }
     return render(request, 'main/answer.html', context)
@@ -142,7 +217,7 @@ def index_view(request):
         'latest_questions': latest_question_list,
         'latest_answers': latest_answer_list,
         }
-    return render(request, 'main/index.html',context)
+    return render(request, 'main/index.html', context)
 
 
 class SearchView(TemplateView): # затычка

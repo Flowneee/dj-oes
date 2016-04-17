@@ -3,9 +3,15 @@
   {{ template_title }}
 {% endblock %} 
 {% block content %}
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+  </script>  
   <ul>
     {% for answer in object_list %}
-      <li><a href="{% url 'answer_detail' answer.id %}">{{ answer.question }};  {{ answer.text }}</a></li>
+      <li><a href="{% url 'answer_detail' answer.id %}">{{ answer.question }};  {{ answer.text|safe }}</a></li>
     {% endfor %}
   </ul>
   <h2><a href="{% url 'answer_new' %}">Новый ответ</a></h2>

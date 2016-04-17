@@ -1,9 +1,13 @@
 # coding: utf-8
+from __future__ import absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+
+import accounts
+from ckeditor.fields import RichTextField
 
 
 class CustomMainManager(models.Manager):
@@ -32,6 +36,11 @@ class Subject(models.Model):
         null=True,
     )
 
+    creator = models.ForeignKey(
+        accounts.models.User,
+        verbose_name=_('Создатель'),
+        related_name='user_subjects',
+    )
     objects = CustomMainManager()
 
     class Meta:
@@ -51,10 +60,22 @@ class Subject(models.Model):
 
 class Question(models.Model):
 
-    text = models.TextField(
+    text = models.CharField(
+        max_length=100,
         verbose_name=_('Вопрос'),
+        help_text="Запишите вопрос или основную его часть используя не более " +
+        "100 символов при необходимости форматирования или большей длинны " +
+        "вопроса, используйте поле «Текст вопроса»",
         blank=False,
     )
+
+    text_full = RichTextField(
+        verbose_name=_('Текст вопроса'),
+        help_text="Если текст вопроса не умещается в заголовке или требуется " +
+        "форматирование, используйте данное поле",
+        blank=True,
+        )
+
     subject = models.ForeignKey(
         'main.Subject',
         verbose_name=_('Тема'),
@@ -80,6 +101,12 @@ class Question(models.Model):
         default=False,
     )
 
+    creator = models.ForeignKey(
+        accounts.models.User,
+        verbose_name=_('Создатель'),
+        related_name='user_questions',
+    )
+
     objects = CustomMainManager()
 
     class Meta:
@@ -102,15 +129,17 @@ class Question(models.Model):
 
 class Answer(models.Model):
 
-    text = models.TextField(
+    text = RichTextField(
         verbose_name=_('Ответ'),
         blank=False,
     )
+
     question = models.ForeignKey(
         'main.Question',
         verbose_name=_('Вопрос'),
         related_name='question_answers',
     )
+
     is_true = models.BooleanField(
         verbose_name=_('Правильный'),
         blank=False,
@@ -120,6 +149,12 @@ class Answer(models.Model):
         verbose_name=_('Дата публикации'),
         blank=True,
         null=True,
+    )
+
+    creator = models.ForeignKey(
+        accounts.models.User,
+        verbose_name=_('Создатель'),
+        related_name='user_answers',
     )
 
     objects = CustomMainManager()

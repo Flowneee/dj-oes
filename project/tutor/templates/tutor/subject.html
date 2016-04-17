@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+
+{% block title %} Выбор темы {% endblock %}
+{% block content %}
+  {% for subject in subjects %}
+    <option value="{{ subject.record_id }}">
+      <a href="{% url 'test_list' subject.record_id %}">
+      {{ subject.string_repr|spacify }} 
+      </a>
+    </option>
+  {% endfor %}
+{% endblock %}

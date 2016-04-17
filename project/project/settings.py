@@ -31,9 +31,12 @@ INSTALLED_APPS = (
 
     'macros',
     'django_ajax',
+    'ckeditor',
+
 
     'accounts',
     'main',
+    'tutor',
     'public_testing',
 )
 
@@ -145,3 +148,4 @@ if DEBUG:
     }
 
 CKEDITOR_CONFIGS = ckeditor_settings.CKEDITOR_CONFIGS
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
