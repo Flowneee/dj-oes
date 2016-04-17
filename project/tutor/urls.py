@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^subject/(?P<subject_id>[0-9]+)', views.TestListView,
         name='test_list'),
     url(r'^subject/', views.SubjectView.as_view(), name='tutor_subject_list'),
+    url(r'^test/$', views.SubjectTestView.as_view(), name='choise_test_list'),
 ]

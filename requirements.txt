@@ -3,6 +3,7 @@ django-bootstrap3
 django-admin-bootstrapped
 django-macros==0.4.0
 djangoajax==2.3.5
+django-ckeditor
 
 # Debug requirements #
 six==1.10.0

@@ -1,10 +1,12 @@
 # coding: utf-8
+from __future__ import absolute_import
 
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 import main
 import accounts
+from ckeditor.fields import RichTextField
 
 
 class Test(models.Model):
@@ -13,7 +15,7 @@ class Test(models.Model):
         verbose_name=_('Название'),
         blank=False,
     )
-    comment = models.TextField(
+    comment = RichTextField(
         verbose_name=_('Комментарий'),
         blank=True,
     )

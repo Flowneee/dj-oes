@@ -1,0 +1,39 @@
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+<div id="question">
+  <b class="question_text">{% trans 'Вопрос' %}: </b>
+  <p class="question_text">{{ question.text }}</p>
+
+  <form role="form" id="question-form">
+    {% csrf_token %}
+    {% for answer in answers %}
+      <div class="{{ element_type }}">
+        <label name="answers">
+          <input type="{{ element_type }}" name="answers"
+                 value ="{{ answer.id }}">{{ answer.text }}
+        </label>
+      </div>
+    {% endfor %}
+    <input type="hidden" name="question_id" value="{{ question.id }}">
+    <input type="hidden" name="answers_order" value="{{ answers_order}}">
+  </form>
+  <button class="btn btn-primary btn-lg" id="answer-button" disabled>
+    {% trans 'Ответить' %}
+  </button>
+</div>
+
+<script type="text/javascript">
+ $("#answer-button").click(
+   function () {
+     ajaxPost("{% url 'ajax_answer_public_question' %}",
+              $("#question-form").serialize(),
+              function (content) {
+                $("#question").replaceWith(content.template);
+              });
+   }
+ );
+ $("#question-form :input").change(function () {
+   $("#answer-button").removeAttr("disabled");
+ })
+</script>

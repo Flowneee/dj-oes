@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Tutor{% endblock %}
 {% block content %}
-Здесь будет главная страница
+  <a href="{% url 'tutor_subject_list' %}"><h2>Тесты</h2></a>
+  <a href="{% url 'choise_test_list' %}"><h2>Добавить тест</h2></a>
 {% endblock %}

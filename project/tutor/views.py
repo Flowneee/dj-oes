@@ -34,34 +34,30 @@ class TestForm(forms.ModelForm):
 class TestCreateView(CreateView):
     form_class = TestForm
     template_name = 'main/add.html'
+    try:
+        self.request.GET['subject_id']
+    except:
+        subject_id = 1
+    else:
+        subject_id = self.request.GET['subject_id']
 
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.creator = self.request.user
+        instance.subject = Subject.objects.get(pk=self.subject_id)
         instance.save()
         form.save_m2m()
         return redirect(reverse_lazy('tutor_subject_list'))
 
     def get_form_kwargs(self):
         kwargs = super(TestCreateView, self).get_form_kwargs()
-        try:
-            self.request.GET['subject_id']
-        except:
-            kwargs['subject_id'] = 1
-        else:
-            kwargs['subject_id'] = self.request.GET['subject_id']
+        kwargs['subject_id'] = self.subject_id
         return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super(TestCreateView, self).get_context_data(**kwargs)
-        try:
-            self.request.GET['subject_id']
-        except:
-            subject_id = 1
-        else:
-            subject_id = self.request.GET['subject_id']    
         ctx['template_title'] = "Новый тест по теме «" + Subject.objects.get(
-                pk=subject_id).text + "»"
+                pk=self.subject_id).text + "»"
         return ctx
 
 
@@ -84,11 +80,15 @@ class SubjectView(TemplateView):
         return context
 
 
+class SubjectTestView(SubjectView):
+    template_name = 'tutor/subject_choise.html'
+
+
 def TestListView(request, subject_id):
     subject_test_list = Test.objects.filter(subject=subject_id)
     context = {
-        'template title': "Тесты по теме" +
-        Subject.objects.get(pk=subject_id).text,
+        'template_title': "Тесты по теме «" +
+        Subject.objects.get(pk=subject_id).text + "»",
         'test_list': subject_test_list,
     }
     return render(request, 'tutor/test_list.html', context)

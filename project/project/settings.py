@@ -1,12 +1,18 @@
 import os
 import django
 from django.core.urlresolvers import reverse_lazy
+import pprint
+from . import ckeditor_settings
 
 import project.private_settings as ps
 
 BASE_DIR = ps.BASE_DIR
 SECRET_KEY = ps.SECRET_KEY
+
 DEBUG = True
+DEBUG_OUTPUT = True
+debug_print = pprint.PrettyPrinter(indent=4).pprint
+
 ALLOWED_HOSTS = ps.ALLOWED_HOSTS
 ADMINS = ps.ADMINS
 DATABASES = ps.DATABASES
@@ -24,10 +30,13 @@ INSTALLED_APPS = (
 
     'macros',
     'django_ajax',
+    'ckeditor',
+
 
     'accounts',
     'main',
     'tutor',
+    'public_testing',
 )
 
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
@@ -136,3 +145,6 @@ if DEBUG:
       'all_applications': True,
       'group_models': True,
     }
+
+CKEDITOR_CONFIGS = ckeditor_settings.CKEDITOR_CONFIGS
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
