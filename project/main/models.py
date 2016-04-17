@@ -13,7 +13,6 @@ class CustomMainManager(models.Manager):
 
 
 class Subject(models.Model):
-
     text = models.TextField(
         max_length=100,
         verbose_name=_('Тема'),
@@ -61,11 +60,24 @@ class Question(models.Model):
         verbose_name=_('Тема'),
         related_name='subject_questions',
     )
-
     pub_date = models.DateTimeField(
         verbose_name=_('Дата публикации'),
         blank=True,
         null=True,
+    )
+    DIFFICULTY = [
+        (1, _('Легкий')),
+        (2, _('Средний')),
+        (3, _('Сложный')),
+    ]
+    difficulty = models.SmallIntegerField(
+        verbose_name=_('Сложность вопроса'),
+        choices=DIFFICULTY,
+        default=1
+    )
+    is_approved = models.BooleanField(
+        verbose_name=_('Отрецензирован'),
+        default=False,
     )
 
     objects = CustomMainManager()

@@ -1,0 +1,37 @@
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+<div class="test">
+  <div class="panel panel-default">
+    <div class="panel-heading">{% trans 'Информация о тесте' %}</div>
+    <div class="panel-body">
+      <p>{% trans 'ID' %}: {{ test.id }}</p>
+      <p>{% trans 'Сложность теста' %}: {{ test.get_difficulty_display }}</p>
+      <p>{% trans 'Правильных ответов' %}: {{ number_of_correct_answers }}</p>
+      <p>{% trans 'Дата и время прохождения' %}: {{ test.date }}</p>
+    </div>
+  </div>
+  <div style="margin-bottom: 50px;">
+    {% trans 'Ниже вы можете увидеть правильные ответы на тест и сравнить их со своими.' %}
+  </div>
+  {% for obj in test_results_content %}
+    <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text|safe }}
+    <h3>{{ obj.result }}</h3>
+    {% for answer in obj.answers %}
+      <div class="{{ obj.element_type }}">
+        <label>
+          <input type="{{ obj.element_type }}" disabled>
+          <p class="{{ answer.text_style }}">
+            {{ answer.answer.text|safe }}
+            {% if answer.icon == True %}
+              {% bootstrap_icon 'ok' %}
+            {% elif answer.icon == False %}
+              {% bootstrap_icon 'remove' %}
+            {% endif %}
+          </p>
+        </label>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</div>

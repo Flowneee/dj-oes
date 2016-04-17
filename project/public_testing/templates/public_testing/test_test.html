@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load extras %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Тестирование' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6 col-xs-offset-3">
+    <p class="subject-text"><b>{% trans 'Тема' %}</b>: {{ subject_breadcrumbs }}</p>
+    <div id="test-div">
+      <form id="test-form" method="POST" action="{% url 'public_test' %}">
+        {% csrf_token %}
+        {% for obj in test_content %}
+          <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text|safe }}
+          {% for answer in obj.answers %}
+            <div class="{{ obj.element_type }}">
+              <label name="{{ obj.question.id }}">
+                <input type="{{ obj.element_type }}" name="{{ obj.question.id }}"
+                       value="{{ answer.id }}">{{ answer.text|safe }}
+              </label>
+            </div>
+          {% endfor %}
+        {% endfor %}
+        <input type="hidden" name="test_id" value="{{ test_id }}">
+        <input type="hidden" name="subject_id" value="{{ subject_id }}">
+      </form>
+      <button class="btn btn-success btn-lg" type="button" id="submit-button" disabled>
+        {% trans 'Готово'  %}
+      </button>
+    </div>
+    <form role="form" method="GET" action="{% url 'index' %}" style="margin-top: 10px;">
+      <button class="btn btn-primary btn-lg" type="Submit">
+        {% trans 'Вернуться на главную' %}
+      </button>
+    </form>
+    <form role="form" method="GET" action="{% url 'public_testing_main' %}"
+          style="margin-top: 10px;">
+      <button class="btn btn-primary btn-lg" type="Submit">
+        {% trans 'Вернуться к выбору тем' %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+   $("#submit-button").click(function () {
+       ajaxPost("{% url 'ajax_public_test_results' %}",
+                $("#test-form").serialize(),
+                function (content) {
+                  $("#test-div").replaceWith(content)
+                });
+   })
+   var is_radio_answered = false
+   function activate_submit_button() {
+     if (is_radio_answered) {
+       $("#submit-button").removeAttr("disabled");
+     };
+   }
+   $(":radio").change(function() {
+     var names = {};
+     $(':radio').each(function() {
+       names[$(this).attr('name')] = true;
+     });
+     var count = 0;
+     $.each(names, function() {
+       count++;
+     });
+     if ($(':radio:checked').length === count) {
+       is_radio_answered = true;
+       activate_submit_button();
+     }
+   }).change();
+  </script>
+{% endblock %}

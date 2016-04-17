@@ -2,7 +2,8 @@ import os
 import django
 from django.core.urlresolvers import reverse_lazy
 import pprint
-import ckeditor_settings
+
+from project import ckeditor_settings
 
 import project.private_settings as ps
 

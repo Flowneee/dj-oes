@@ -8,16 +8,27 @@
 
 {% block content %}
   <div class="col-xs-6 col-xs-offset-3">
-    <p>{% trans 'Все, что вам надо сделать, это выбрать тему ниже и нажать кнопку "Начать тестирование".' %}</p>
-    <p>{% trans 'В тестирование будут включены все вопросы по выбранной теме и ее подтемам.' %}</p>
-    <form method="GET" action="{% url 'public_test' %}" class="form-group">
-      <select size="30" class="form-control" name="subject_id">
-        {% for subject in subjects %}
-          <option value="{{ subject.record_id }}">
-            {{ subject.string_repr|spacify }}
-          </option>
-        {% endfor %}
-      </select>
+    <p>{% trans 'Все, что вам надо сделать, это выбрать тему и сложность теста ниже и нажать кнопку "Начать тестирование".' %}</p>
+    <p>{% trans 'В тестирование будут включены 20 случайных вопросов по выбранной теме и ее подтемам.' %}</p>
+    <form method="GET" action="{% url 'public_test' %}">
+      <fieldset class="form-group">
+        <label for="subject_id">{% trans 'Тема' %}</label>
+        <select size="30" class="form-control" name="subject_id" id="subject_id">
+          {% for subject in subjects %}
+            <option value="{{ subject.record_id }}">
+              {{ subject.string_repr|spacify }}
+            </option>
+          {% endfor %}
+        </select>
+      </fieldset>
+      <fieldset class="form-group">
+        <label for="difficulty">{% trans 'Сложность теста' %}</label>
+        <select class="form-control" name="difficulty" id="difficulty">
+          <option value="1">{% trans 'Легкий' %}</option>
+          <option value="2">{% trans 'Средний' %}</option>
+          <option value="3">{% trans 'Сложный' %}</option>
+        </select>
+      </fieldset>
       <br>
       <button type="submit" class="btn btn-success btn-lg">
         {% trans 'Начать тестирование' %} {% bootstrap_icon 'play' %}

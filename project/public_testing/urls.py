@@ -12,5 +12,8 @@ urlpatterns = [
         name='ajax_get_question'),
     url(r'^ajax_answer_public_question/$',
         views.AJAXAnswerPublicQuestionView.as_view(),
-        name='ajax_answer_public_question')
+        name='ajax_answer_public_question'),
+    url(r'^ajax_public_test_results/$',
+        views.AJAXPublicTestResultsView.as_view(),
+        name='ajax_public_test_results'),
 ]

@@ -68,7 +68,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     patronymic = models.CharField(
         verbose_name=_('Отчество'),
         max_length=75, blank=True,
+        null=True,
         validators=[NameValidator(), ]
+    )
+    study_group = models.CharField(
+        verbose_name=_('Учебная группа'),
+        max_length=20, blank=True,
+        null=True,
     )
     # birth_date = models.DateField(
     #     verbose_name=_('Дата рождения'),
@@ -132,3 +138,30 @@ class ProxyGroup(Group):
         proxy = True
         verbose_name = Group._meta.verbose_name
         verbose_name_plural = Group._meta.verbose_name_plural
+
+
+class UserRating(models.Model):
+    user = models.ForeignKey(
+        'accounts.User',
+        verbose_name=_('Пользователь'),
+        blank=False, null=False,
+        related_name='user_ratings',
+    )
+    subject = models.ForeignKey(
+        'main.Subject',
+        verbose_name=_('Тема'),
+        blank=False, null=False,
+    )
+    value = models.IntegerField(
+        verbose_name=_('Значение'),
+        blank=False, null=False,
+        default=0,
+    )
+
+    class Meta:
+        verbose_name = _('Рейтинг пользователя по теме')
+        verbose_name_plural = _('Рейтинги пользователей')
+        unique_together = ('user', 'subject')
+
+    def __str__(self):
+        return self.user.get_short_name + ' ' + str(self.subject) + str(self.value)
