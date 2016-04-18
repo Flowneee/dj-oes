@@ -1,9 +1,13 @@
+# Common requirements #
 Django==1.8.12
 django-bootstrap3
 django-admin-bootstrapped
 django-macros==0.4.0
 djangoajax==2.3.5
-django-ckeditor
+django-ckeditor==5.0.3
+
+# Database specific requirements #
+psycopg2==2.6.1
 
 # Debug requirements #
 six==1.10.0

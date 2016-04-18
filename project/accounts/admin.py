@@ -30,7 +30,7 @@ class UserAdmin(aauth.UserAdmin):
             'email', 'last_name', 'first_name',
             'patronymic', 'study_group')}),
         (_('Права'), {'fields': (
-            'account_level', 'is_staff', 'is_superuser',
+            'account_level', 'is_active', 'is_staff', 'is_superuser',
             'groups', 'user_permissions')}),
         (_('Важные даты'), {'fields': ('last_login', 'date_joined')}),
     )

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block title %}{% trans 'Главная' %}{% endblock %}
+
+{% block content %}
+  <div class="col-xs-6">
+    <h2>{% trans 'Добро пожаловать на сайт системы онлайн тестирования "ЯСЕНЬ".' %}</h2>
+    <p>{% trans 'Ознакомтесь с возможностями системы, перечисленными ниже. Иcпользуйте меню слева для навигаации по сайту.' %}
+    <div class="panel-group" id="accordion" role="tablist"
+         aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+               href="#collapseOne" aria-expanded="false"
+               aria-controls="collapseOne">
+              {% trans 'Пользователи сами создают контент и управляют им' %}
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
+             aria-labelledby="headingOne">
+          <div class="panel-body">
+            {% trans 'Пользователи сами решают, что им интересно, а что нет. Именно пользователи создают контент на сайте и управляют им. Каждый зарегистрированный пользователь может добавить свой вопрос на сайт, и другие пользователи могут оценить его.' %}
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse"
+               data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+               aria-controls="collapseTwo">
+              {% trans 'Тестирование для самопроверки' %}
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+             aria-labelledby="headingTwo">
+          <div class="panel-body">
+            {% trans 'Основная суть системы: прохождение пользователями тестов по различным предметам. Каждый, даже не зарегистрированный, пользователь может выбрать тему, сложность теста, и проверить свои знания по выбранному предмету. После прохождения теста можно сравнить правильные ответы со своими. Зарегистрированные пользователи могут также просмотреть историю пройденных тестов, чтобы увидеть свой прогресс.' %}
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              {% trans 'Рейтинговая система' %}
+            </a>
+          </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            {% trans 'По каждой теме пользователю начисляется рейтинг. За каждый пройденный тест пользователю начисляется некоторое количество рейтинга, рассчитываемое из количества правильных ответов и сложности теста. Чем выше рейтинг пользователя в теме, тем больше возможностей у него есть: рецензирование и одобрение новых вопросов по этой теме, удаление некачественных.' %}
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFour">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              {% trans 'Контрольное тестирование' %}
+            </a>
+          </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+          <div class="panel-body">
+            {% trans 'Система предназначена не только для использования студентами, но и преподавателями. С помощью системы преподаватели могу проводить промежуточное тестирование студентов удаленно. Преподаватели могут сами составлять тесты для своих студентов, выбирать, кому этот тест будет доступен, также устанавливаать ограничение по времени прохождения теста, а после просматривать результаты прохождения тестов студентами.' %}
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFour">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              {% trans 'Продвинутый редактор текста' %}
+            </a>
+          </h4>
+        </div>
+        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+          <div class="panel-body">
+            {% trans 'В качестве редактора текста для вопросов и ответов используется популярный текстовый веб редактор CKEditor. Это позволяет добавлять в вопросы и ответы форматированный текст (различные цвета, шрифты, стили), а также математические формулы (используя TeX), а исходный код с подсветкой синтаксиса для различных языков программирования.' %}
+            <img src="{% static 'editor_example.png' %}"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

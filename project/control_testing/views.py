@@ -3,7 +3,7 @@ import json
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.utils.translation import ugettext_lazy as _
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseForbidden
 
 from django_ajax.mixin import AJAXMixin
 
@@ -39,7 +39,7 @@ class ControlTestDetailsView(TemplateView):
         context = self.get_context_data(**kwargs)
         test = Test.objects.get(id=int(request.GET['test_id']))
         if request.user.study_group.lower() not in test.study_groups.lower():
-            return HttpResponseNotFound('<h1>Error 404: Not found!</h1>')
+            return HttpResponseForbidden('<h1>Error 404: Not found!</h1>')
         context['subject_breadcrumbs'] = construct_subject_breadcrumbs(
             test.subject
         )
@@ -81,7 +81,7 @@ class ControlTestView(TemplateView):
 
         context['test'] = test
         if request.user.study_group.lower() not in test.study_groups.lower():
-            return HttpResponseNotFound('<h1>Error 404: Not found!</h1>')
+            return HttpResponseForbidden('<h1>Error 403: Forbidden.</h1>')
         debug_print(context['test_content'])
         context['subject_breadcrumbs'] = construct_subject_breadcrumbs(
             test.subject

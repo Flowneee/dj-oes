@@ -5,7 +5,7 @@
 {% block title %}{% trans 'Вход' %}{% endblock %}
 
 {% block content %}
-  <div class="col-xs-2 col-xs-offset-5">
+  <div class="col-xs-2 col-xs-offset-2">
     <form action="{% url 'login' %}" method="post">
       {% csrf_token %}
       {% bootstrap_form form %}

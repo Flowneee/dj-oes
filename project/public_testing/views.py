@@ -46,7 +46,10 @@ def get_answers(question):
         print(question)
         out += sample(trues, randint(1, len(trues)))
         if len(out) < 4:
-            out += sample(list(answers.filter(is_true=False)), 4-len(out))
+            #out += sample(list(answers.filter(is_true=False)), 4-len(out))
+            out += sample(list(answers.exclude(
+                id__in=[i.id for i in out]
+            )), 4-len(out))
     return out
 
 
@@ -200,6 +203,8 @@ class AJAXPublicTestResultsView(AJAXMixin, TemplateView):
         test_results.json_log = json.dumps(test_json)
         test_results.result = number_of_correct_answers
         context['test'] = test_results
+        if DEBUG_OUTPUT:
+            debug_print(test_results_content)
         context['test_results_content'] = test_results_content
         context['number_of_correct_answers'] = number_of_correct_answers
         test_results.is_completed = True

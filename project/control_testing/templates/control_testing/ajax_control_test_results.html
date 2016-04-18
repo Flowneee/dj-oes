@@ -20,7 +20,8 @@
     {% trans 'Ниже вы можете увидеть правильные ответы на тест и сравнить их со своими.' %}
   </div>
   {% for obj in test_results_content %}
-    <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text|safe }}
+    <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text }}
+    <p>{{ obj.question.text_full|safe }}</p>>
     <h3>{{ obj.result }}</h3>
     {% for answer in obj.answers %}
       <div class="{{ obj.element_type }}">
@@ -39,3 +40,10 @@
     {% endfor %}
   {% endfor %}
 </div>
+
+<script>
+ $("#answer-result > label > p").css("display", "inline")
+ $('pre code').each(function(i, block) {
+   hljs.highlightBlock(block);
+ });
+</script>

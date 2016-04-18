@@ -7,13 +7,14 @@
 {% block title %}{% trans 'Тестирование' %}{% endblock %}
 
 {% block content %}
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-xs-6">
     <p class="subject-text"><b>{% trans 'Тема' %}</b>: {{ subject_breadcrumbs }}</p>
     <div id="test-div">
       <form id="test-form" method="POST" action="{% url 'public_test' %}">
         {% csrf_token %}
         {% for obj in test_content %}
-          <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text|safe }}
+          <b>{% trans 'Вопрос' %}: </b>{{ obj.question.text }}
+          <p>{{ obj.question.text_full|safe }}</p>
           {% for answer in obj.answers %}
             <div class="{{ obj.element_type }}">
               <label name="{{ obj.question.id }}">

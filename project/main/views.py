@@ -217,7 +217,7 @@ def index_view(request):
         'latest_questions': latest_question_list,
         'latest_answers': latest_answer_list,
         }
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/test_index.html', context)
 
 
 class SearchView(TemplateView): # затычка

@@ -121,6 +121,7 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         self.pub_date = timezone.now()
+        self.is_approved = self.creator.account_level in ['2', '3']
         super(Question, self).save()
 
     def is_only_answer(self):

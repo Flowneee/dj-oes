@@ -2,14 +2,14 @@
 {% load bootstrap3 %}
 {% block title %}
   {{ template_title }}
-{% endblock %}  
+{% endblock %}
 {% block content %}
-  <div class="col-xs-6 col-xs-offset-3">    
+  <div class="col-xs-6">
     <form method="POST" class="subject-form">
       {% csrf_token %}
       {{ form.media }}
       {% bootstrap_form form %}
       <button type="submit" class="save btn btn-default">Сохранить</button>
     </form>
-  </div> 
+  </div>
 {% endblock %}

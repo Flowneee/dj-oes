@@ -7,7 +7,7 @@
 {% block title %}{% trans 'Контрольное тестирование' %}{% endblock %}
 
 {% block content %}
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-xs-6">
     {% if avaliable_tests|length == 0 %}
       <h2>{% trans 'Нет доступных для прохождения контрольных тестов.' %}</h2>
     {% else %}

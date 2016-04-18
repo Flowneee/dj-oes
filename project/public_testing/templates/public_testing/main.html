@@ -7,7 +7,7 @@
 {% block title %}{% trans 'Тестирование' %}{% endblock %}
 
 {% block content %}
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-xs-6">
     <p>{% trans 'Все, что вам надо сделать, это выбрать тему и сложность теста ниже и нажать кнопку "Начать тестирование".' %}</p>
     <p>{% trans 'В тестирование будут включены 20 случайных вопросов по выбранной теме и ее подтемам.' %}</p>
     <form method="GET" action="{% url 'public_test' %}">
