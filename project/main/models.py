@@ -60,7 +60,7 @@ class Subject(models.Model):
 
 class Question(models.Model):
 
-    text = models.CharField(
+    text = models.TextField(
         max_length=100,
         verbose_name=_('Вопрос'),
         help_text="Запишите вопрос или основную его часть используя не более " +

@@ -1,6 +1,4 @@
 import os
-import django
-from django.core.urlresolvers import reverse_lazy
 import pprint
 
 from project import ckeditor_settings
@@ -17,6 +15,8 @@ debug_print = pprint.PrettyPrinter(indent=4).pprint
 ALLOWED_HOSTS = ps.ALLOWED_HOSTS
 ADMINS = ps.ADMINS
 DATABASES = ps.DATABASES
+
+JQUERY_URL = '//code.jquery.com/jquery.min.js'
 
 INSTALLED_APPS = (
     'bootstrap3',
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,13 +73,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -99,6 +92,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 
 # DEBUG SETTINGS #
 if DEBUG:
@@ -114,6 +111,7 @@ if DEBUG:
     # Debug Toolbar settings
     INTERNAL_IPS = ps.ALLOWED_HOSTS
     DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': JQUERY_URL,
         'INTERCEPT_REDIRECTS': False,
         'SHOW_TOOLBAR_CALLBACK': 'project.settings.show_toolbar',
     }
@@ -149,4 +147,32 @@ if DEBUG:
     }
 
 CKEDITOR_CONFIGS = ckeditor_settings.CKEDITOR_CONFIGS
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_JQUERY_URL = JQUERY_URL
+
+BOOTSTRAP3 = {
+    'jquery_url': JQUERY_URL,
+    'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/',
+    'css_url': None,
+    'theme_url': None,
+    'javascript_url': None,
+    'javascript_in_head': False,
+    'include_jquery': False,
+    'horizontal_label_class': 'col-md-3',
+    'horizontal_field_class': 'col-md-9',
+    'set_required': True,
+    'set_disabled': False,
+    'set_placeholder': True,
+    'required_css_class': '',
+    'error_css_class': 'has-error',
+    'success_css_class': 'has-success',
+    'formset_renderers': {
+        'default': 'bootstrap3.renderers.FormsetRenderer',
+    },
+    'form_renderers': {
+        'default': 'bootstrap3.renderers.FormRenderer',
+    },
+    'field_renderers': {
+        'default': 'bootstrap3.renderers.FieldRenderer',
+        'inline': 'bootstrap3.renderers.InlineFieldRenderer',
+    },
+}

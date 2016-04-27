@@ -24,7 +24,7 @@ CKEDITOR_CONFIGS = {
 
         ],
         'toolbar': 'myToolbar',
-        'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'mathJaxLib': '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML',
         'tabSpaces': 4,
         'codeSnippet_theme': 'monokai_sublime',
         'extraPlugins': ','.join(
